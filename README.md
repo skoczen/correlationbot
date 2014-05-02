@@ -34,5 +34,5 @@ print requests.json
 ```
 
 # Deploying Correlationbot
-1. `export CB_PORT=8000` (or have permissions to port 80.)
+1. `export PORT=9099` (or have permissions to port 80.)
 2. `python bot.py`

@@ -20,6 +20,6 @@ def do_correlation():
 
 
 if __name__ == '__main__':
-    PORT = os.environ.get("CB_PORT", 80)
+    PORT = os.environ.get("PORT", 80)
     DEBUG = os.environ.get("DEBUG_ON", False)
     app.run(host='localhost', port=PORT, debug=DEBUG)

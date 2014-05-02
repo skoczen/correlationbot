@@ -3,4 +3,4 @@ bottle
 jinja2
 
 nose
-WebTest
+webtest

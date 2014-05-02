@@ -28,6 +28,8 @@ class InvalidPostTests(BotTests):
 
 
     def test_bad_format(self):
-        resp = self.app.post_json('/', {"hey there": 1}, expect_errors=True)
+        resp = self.app.post_json('/', {
+            "hey there": 1
+        }, expect_errors=True)
         self.assertEqual(resp.status_int, 400)
         self.assertIn("Data format wasn&#039;t correct.", resp)

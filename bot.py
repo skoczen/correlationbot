@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import functools
 import os
+import numpy
 from bottle import abort, Bottle, jinja2_view, request, response 
 
 
@@ -24,7 +25,9 @@ BADLY_FORMATTED_DATA_ERROR = """Data format wasn't correct. Correlationbot expec
 
 @app.post('/')
 def do_correlation():
-    if request.headers.get("Content-Type") == "application/json":
+    if not request.headers.get("Content-Type") == "application/json":
+        abort(400, "You must post with a Content-Type of application/json.")
+    else:
         # Validate data is similar to:
         # "data": [
         #     [1, 2, 3, 4],
@@ -54,27 +57,32 @@ def do_correlation():
 
 
         # Data's all good. run the correlations.
+        correlations = []
+        all_correlations = numpy.corrcoef(datasets)
 
+        # Actually, do this all at once using numpy
+        for col_1_index in range(0, len(datasets)):
+            for col_2_index in range(col_1_index, len(datasets)):
+                if col_1_index != col_2_index:
+                    pearson = all_correlations[col_1_index][col_2_index]
+                    
+                    # Different column.
+                    correlations.append({
+                        "column_1": col_1_index+1,
+                        "column_2": col_2_index+1,
+                        "correlation": pearson,
+                        # "covariance": numpy.cov(datasets[col_1_index], datasets[col_2_index]),
+                        "pearson": pearson,
+                        # "spearman": 0.4,
+                        # "kendall": 0.2,
+                    })
 
-        data = {
-            "correlations": [
-                {
-                    index1: "1",
-                    index2: "2",
-                    correlation: 0.93,
-                    covariance_1: -0.93,
-                    pearson: 0.93,
-                    spearman: 0.4,
-                    kendall: 0.2,
-                },
-            ]
-        }
+        data = {"correlations": correlations}
         return data
-    else:
-        abort(400, "You must post with a Content-Type of application/json.")
+        
 
 
 if __name__ == '__main__':
     PORT = os.environ.get("PORT", 80)
     DEBUG = os.environ.get("DEBUG_ON", "false") == "true"
-    app.run(host='0.0.0.0', port=PORT, debug=DEBUG)
+    app.run(host='0.0.0.0', port=PORT, debug=DEBUG, reloader=DEBUG)

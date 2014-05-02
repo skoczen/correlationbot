@@ -1,6 +1,8 @@
 # Puppet will install and/or update pip packages listed here
 bottle
 jinja2
+# I hate myself for this.
+numpy
 
 nose
 webtest

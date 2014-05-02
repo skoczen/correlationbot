@@ -1,0 +1,6 @@
+# Puppet will install and/or update pip packages listed here
+bottle
+jinja2
+
+nose
+WebTest

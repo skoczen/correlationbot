@@ -1,0 +1,8 @@
+test:
+  override:
+    - nosetests
+deployment:
+  production:
+    branch: master
+    heroku:
+      appname: correlationbot

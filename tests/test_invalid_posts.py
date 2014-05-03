@@ -8,7 +8,7 @@ class InvalidPostTests(BotTests):
             [1, 2, 3],
         ]}, expect_errors=True)
         self.assertEqual(resp.status_int, 400)
-        self.assertIn("You&#039;ll need to provide more than one dataset.", resp)
+        self.assertIn("You'll need to provide more than one dataset.", resp)
 
     def test_unequal_data_sets(self):
         resp = self.app.post_json('/', {"data": [
@@ -24,7 +24,7 @@ class InvalidPostTests(BotTests):
             [4, 5]
         ]}, expect_errors=True)
         self.assertEqual(resp.status_int, 400)
-        self.assertIn("Posted data contains a non-number: &#039;yo1&#039;", resp)
+        self.assertIn("Posted data contains a non-number: 'yo1'", resp)
 
 
     def test_bad_format(self):
@@ -32,4 +32,4 @@ class InvalidPostTests(BotTests):
             "hey there": 1
         }, expect_errors=True)
         self.assertEqual(resp.status_int, 400)
-        self.assertIn("Data format wasn&#039;t correct.", resp)
+        self.assertIn("Data format wasn't correct.", resp)

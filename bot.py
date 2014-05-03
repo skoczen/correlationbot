@@ -2,7 +2,7 @@
 import functools
 import os
 import numpy
-from bottle import abort, Bottle, jinja2_view, request, response 
+from bottle import error, Bottle, jinja2_view, request, response 
 
 
 view = functools.partial(jinja2_view, template_lookup=['templates'])
@@ -23,10 +23,14 @@ BADLY_FORMATTED_DATA_ERROR = """Data format wasn't correct. Correlationbot expec
 }
 """
 
+
+
 @app.post('/')
 def do_correlation():
     if not request.headers.get("Content-Type") == "application/json":
-        abort(400, "You must post with a Content-Type of application/json.")
+        response.content_type = 'application/json'
+        response.status = 400
+        return "You must post with a Content-Type of application/json."
     else:
         # Validate data is similar to:
         # "data": [
@@ -34,26 +38,36 @@ def do_correlation():
         #     [5, 6, 7, 8]
         # ]
         if "data" not in request.json:
-            abort(400, BADLY_FORMATTED_DATA_ERROR)
+            response.content_type = 'application/json'
+            response.status = 400
+            return BADLY_FORMATTED_DATA_ERROR
         else:
             datasets = request.json["data"]
             if not type(datasets) == type([]):
-                abort(400, BADLY_FORMATTED_DATA_ERROR)
+                response.content_type = 'application/json'
+                response.status = 400
+                return BADLY_FORMATTED_DATA_ERROR
             else:
                 if len(datasets) < 2:
-                    abort(400, "You'll need to provide more than one dataset.")
+                    response.content_type = 'application/json'
+                    response.status = 400
+                    return "You'll need to provide more than one dataset."
                 list_len = None
                 for s in datasets:
                     if not list_len:
                         list_len = len(s)
                     else:
                         if list_len != len(s):
-                            abort(400, "Datasets were of unequal length.")
+                            response.content_type = 'application/json'
+                            response.status = 400
+                            return "Datasets were of unequal length."
                     for r in s:
                         try:
                             float(r)
                         except:
-                            abort(400, "Posted data contains a non-number: '%s'" % r)
+                            response.content_type = 'application/json'
+                            response.status = 400
+                            return "Posted data contains a non-number: '%s'" % r
 
 
         # Data's all good. run the correlations.

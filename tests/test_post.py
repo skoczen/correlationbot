@@ -11,9 +11,6 @@ class ValidPostTests(BotTests):
             ]
         })
         self.assertEqual(resp.status_int, 200)
-        print "resp.json"
-        print resp.json
-        print resp
         self.assertEqual(resp.json, {
             "correlations": [
                 {

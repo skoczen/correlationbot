@@ -9,29 +9,34 @@ He is one endpoint:
 
 1. Use HTTP on http://correlationbot.com.  `GET` for instructions, `POST` for results.
 
+Curl:
 
+```bash
+$ curl -X POST -H "Content-Type: application/json" -d '{"data": [[1,2,3,4,6,7,8,9],[2,4,6,8,10,12,13,15]]}' http://correlationbot.com
+{"correlations": [{"pearson": 0.99535001355530017, "column_2": 2, "column_1": 1, "correlation": 0.99535001355530017}]}
+```
+
+Python:
 ```python
-# TODO: change this to curl.
-import requests
-
-requests.POST("http://correlationbot.com", data={
+>>> import requests
+>>> resp = requests.post("http://correlationbot.com", data={
     "data": [
-        [1, 2, 3, 4],
-        [5, 6, 7, 8]
+        [1, 2, 3, 4,  6,  7,  8,  9],
+        [2, 4, 6, 8, 10, 12, 13, 15],
     ]
 })
-
-print requests.json
->>> [{
-        index1: "1",
-        index2: "2",
-        correlation: 0.93,
-        covariance_1: -0.93,
-        pearson: 0.93,
-        spearman: 0.4,
-        kendall: 0.2,
-    },]
+>>> print resp.json()
+{
+    "correlations": {
+        "column_1": "1",
+        "column_2": "2",
+        "correlation": 0.9953500135553002,
+        "pearson": 0.9953500135553002,
+    }
+]
+</pr
 ```
+
 
 # Deploying Correlationbot
 1. `export PORT=9099` (or have permissions to port 80.)

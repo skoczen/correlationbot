@@ -3,7 +3,7 @@ import functools
 import os
 import numpy
 from bottle import error, Bottle, jinja2_view, request, response 
-
+from lib.scipy.stats import spearmanr
 
 view = functools.partial(jinja2_view, template_lookup=['templates'])
 app = Bottle()
@@ -73,22 +73,26 @@ def do_correlation():
 
         # Data's all good. run the correlations.
         correlations = []
-        all_correlations = numpy.corrcoef(datasets)
+        pearson = numpy.corrcoef(datasets)
+        spearman_pval, spearman_rho = spearmanr(datasets)
 
         # Actually, do this all at once using numpy
         for col_1_index in range(0, len(datasets)):
             for col_2_index in range(col_1_index, len(datasets)):
                 if col_1_index != col_2_index:
-                    pearson = all_correlations[col_1_index][col_2_index]
+                    pearson_val = pearson[col_1_index][col_2_index]
+                    spearman_rho_val = spearman_rho[col_1_index][col_2_index]
+                    spearman_pval_val = spearman_pval[col_1_index][col_2_index]
                     
                     # Different column.
                     correlations.append({
                         "column_1": col_1_index+1,
                         "column_2": col_2_index+1,
-                        "correlation": pearson,
+                        "correlation": pearson_val,
                         # "covariance": numpy.cov(datasets[col_1_index], datasets[col_2_index]),
-                        "pearson": pearson,
-                        # "spearman": 0.4,
+                        "pearson": pearson_val,
+                        "spearman_pval": spearman_pval_val,
+                        "spearman_rho": spearman_rho_val,
                         # "kendall": 0.2,
                     })
 

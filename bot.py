@@ -24,7 +24,6 @@ BADLY_FORMATTED_DATA_ERROR = """Data format wasn't correct. Correlationbot expec
 """
 
 
-
 @app.post('/')
 def do_correlation():
     data = None

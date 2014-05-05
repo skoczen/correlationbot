@@ -3,7 +3,7 @@ import functools
 import os
 import numpy
 from bottle import error, Bottle, jinja2_view, request, response 
-from lib.scipy.stats import spearmanr
+from stats.pearson import compute_pearson
 
 view = functools.partial(jinja2_view, template_lookup=['templates'])
 app = Bottle()
@@ -73,7 +73,7 @@ def do_correlation():
 
         # Data's all good. run the correlations.
         correlations = []
-        pearson = numpy.corrcoef(datasets)
+        pearson = compute_pearson(datasets)
         spearman_pval, spearman_rho = spearmanr(datasets)
 
         # Actually, do this all at once using numpy

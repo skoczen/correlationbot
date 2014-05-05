@@ -18,8 +18,10 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"data": [[1,2,3,4,6,7,8,
 
 Python:
 ```python
+>>> import json
 >>> import requests
->>> resp = requests.post("http://correlationbot.com", data={
+>>> headers = {'Content-type': 'application/json', }
+>>> resp = requests.post("http://correlationbot.com", headers=headers, data=json.dumps({
     "data": [
         [1, 2, 3],
         [412, 5, 6],

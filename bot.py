@@ -27,6 +27,7 @@ BADLY_FORMATTED_DATA_ERROR = """Data format wasn't correct. Correlationbot expec
 
 @app.post('/')
 def do_correlation():
+    data = None
     if not request.headers.get("Content-Type") == "application/json":
         response.content_type = 'application/json'
         response.status = 400

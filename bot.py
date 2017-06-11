@@ -2,12 +2,14 @@
 import functools
 import os
 import numpy
-from bottle import error, Bottle, jinja2_view, request, response 
+import bottle
+from bottle import error, Bottle, jinja2_view, request, response
 
 
 view = functools.partial(jinja2_view, template_lookup=['templates'])
 bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024 * 20
 app = Bottle()
+
 
 @app.get('/')
 @view('home.html')

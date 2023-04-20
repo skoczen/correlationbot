@@ -1,5 +1,5 @@
 FROM python:3.10.9-slim
-MAINTAINER Steven Skoczen <steven@oxintel.ai>
+MAINTAINER Steven Skoczen <skoczen@gmail.com>
 
 RUN apt-get update && apt-get install -y \
     build-essential \

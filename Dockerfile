@@ -16,5 +16,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
 COPY bot.py bot.py
 COPY . .
 
+EXPOSE 8765
+
 # Run the bot.py script
 CMD ["python", "bot.py"]
